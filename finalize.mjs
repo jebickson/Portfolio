@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 for (const file of ['index.html','gallery.html']) {
  let html=fs.readFileSync('dist/'+file,'utf8');
- html=html.replace(/<a class="button button-outline topbar-cta"[^>]*>[\s\S]*?<\/a>/,'<a class="button button-outline topbar-cta" href="mailto:jebisam12@gmail.com?subject=CV%20request" aria-label="Request Jebickson Samuel’s CV by email" title="Request CV by email">CV <svg><use href="#down"/></svg></a>');
+ html=html.replace(/<a class="button button-outline topbar-cta"[^>]*>[\s\S]*?<\/a>/,'<a class="button button-outline topbar-cta" href="assets/Jebickson-Samuel-CV.pdf" target="_blank" rel="noopener noreferrer" aria-label="View Jebickson Samuel’s CV (PDF)" title="View CV (PDF)">CV <svg><use href="#down"/></svg></a>');
  html=html.replace('<span>All rights reserved.</span>','<span>All rights reserved.</span><div class="footer-links"><a href="privacy.html">Privacy</a><a href="legal.html">Legal Notice</a></div>');
  fs.writeFileSync('dist/'+file,html);
 }
