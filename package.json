@@ -2,6 +2,10 @@
   "name": "jebickson-portfolio",
   "version": "1.0.0",
   "private": true,
-  "description": "Jebickson Samuel's portfolio, inspired by fvukelic.com",
-  "scripts": { "dev": "node server.mjs", "start": "node server.mjs", "check": "node --check dist/app.js && node --check dist/profile.js && node --check server.mjs" }
+  "description": "Jebickson Samuel development portfolio and project gallery",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "check": "node --check dist/app.js && node --check dist/profile.js && node --check server.mjs"
+  }
 }

@@ -12,7 +12,7 @@
   $$('[data-email-text]').forEach(el => el.textContent = profile.email);
   document.title = `${profile.name} — ${profile.role}`;
   $('#year').textContent = new Date().getFullYear();
-  $('#stack-tags').innerHTML = profile.toolkit.map(tag => `<span>${escapeHTML(tag)}</span>`).join('');
+  if ($('#stack-tags')) $('#stack-tags').innerHTML = profile.toolkit.map(tag => `<span>${escapeHTML(tag)}</span>`).join('');
 
   let activeFilter = 'all';
   let expanded = false;
@@ -22,22 +22,19 @@
     const matching = profile.projects.filter(project => activeFilter === 'all' || project.category === activeFilter);
     const visible = expanded ? matching : matching.slice(0, 4);
     grid.innerHTML = visible.map(project => `<article class="project-card">
-      <button class="project-image-button" data-project="${escapeHTML(project.id)}" aria-label="View ${escapeHTML(project.title)} project details"><img src="${escapeHTML(project.image)}" alt="${escapeHTML(project.title)} reference website preview" width="960" height="533" loading="lazy"><span class="project-open" aria-hidden="true"><svg><use href="#arrow"/></svg></span></button>
-      <div class="project-title-row"><h3>${escapeHTML(project.title)}</h3><span class="project-type">${project.category === 'app' ? 'Web application' : 'Website'}</span></div>
+      <button class="project-image-button" data-project="${escapeHTML(project.id)}" aria-label="View ${escapeHTML(project.title)} project details"><img src="${escapeHTML(project.image)}" alt="${escapeHTML(project.title)} project illustration" width="960" height="533" loading="lazy"><span class="project-open" aria-hidden="true"><svg><use href="#arrow"/></svg></span></button>
+      <div class="project-title-row"><h3>${escapeHTML(project.title)}</h3><span class="heading-line"></span><a class="icon-link" href="${safeURL(project.code)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(project.title)} source code"><svg><use href="#github"/></svg></a><a class="icon-link" href="${safeURL(project.live)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(project.title)} live website"><svg><use href="#arrow"/></svg></a></div>
       <p class="project-tech">${project.tags.map(escapeHTML).join(' · ')}</p><p class="project-description">${escapeHTML(project.description)}</p>
       <button class="text-link" data-project="${escapeHTML(project.id)}" aria-label="Details for ${escapeHTML(project.title)}">Explore project <svg><use href="#arrow"/></svg></button>
     </article>`).join('');
-    $('#project-count').textContent = `${visible.length} of ${matching.length} reference projects`;
-    galleryToggle.hidden = matching.length <= 4;
-    galleryToggle.innerHTML = `${expanded ? 'Show fewer projects' : 'View all projects'} <svg><use href="#arrow"/></svg>`;
-    galleryToggle.setAttribute('aria-expanded', String(expanded));
+    $('#project-count').textContent = `${visible.length} of ${matching.length} projects`;
+
   }
   $$('.filter').forEach(button => button.addEventListener('click', () => {
     activeFilter = button.dataset.filter; expanded = false;
     $$('.filter').forEach(filter => {const selected = filter === button; filter.classList.toggle('active', selected); filter.setAttribute('aria-pressed', String(selected));});
     renderProjects();
   }));
-  galleryToggle.addEventListener('click', () => {expanded = !expanded; renderProjects(); if (!expanded) $('#projects').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});});
   renderProjects();
 
   const dialog = $('#project-dialog');
@@ -48,7 +45,7 @@
     lastProjectButton = button;
     $('#dialog-title').textContent = project.title;
     $('#dialog-image').src = project.image;
-    $('#dialog-image').alt = `${project.title} reference website preview`;
+    $('#dialog-image').alt = `${project.title} project illustration`;
     $('#dialog-tags').innerHTML = project.tags.map(tag => `<span>${escapeHTML(tag)}</span>`).join('');
     $('#dialog-description').textContent = project.detail;
     $('#dialog-live').href = safeURL(project.live);
@@ -61,13 +58,13 @@
 
   let toastTimer;
   function toast(message) {const element = $('#toast');element.textContent = message;element.classList.add('visible');clearTimeout(toastTimer);toastTimer = setTimeout(() => element.classList.remove('visible'), 3200);}
-  $('#copy-email').addEventListener('click', async () => {
+  $('#copy-email')?.addEventListener('click', async () => {
     try {await navigator.clipboard.writeText(profile.email);toast('Email address copied. Say hello!');}
     catch {toast(`Email: ${profile.email}`);const range = document.createRange();range.selectNodeContents($('[data-email-text]'));const selection = window.getSelection();selection.removeAllRanges();selection.addRange(range);}
   });
 
   const navLinks = $$('.sidebar nav a');
-  const sections = navLinks.map(link => $(link.getAttribute('href')));
+  const sections = navLinks.map(link => document.getElementById(link.hash.slice(1))).filter(Boolean);
   let scrollQueued = false;
   function updateActiveSection() {
     const position = window.scrollY + Math.min(window.innerHeight * .35, 220);
@@ -81,7 +78,7 @@
   updateActiveSection();
 
   const canvas = $('#dot-field');
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas?.getContext('2d');
   if (!ctx) return;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hero = $('.hero');
