@@ -26,6 +26,17 @@ window.PORTFOLIO = {
     "GitHub"
   ],
   "projects": [
+   /* {
+  "id": "my-new-project",
+  "title": "My New Project",
+  "category": "app",
+  "image": "assets/solo.avif",
+  "tags": ["React", "Node.js", "MongoDB"],
+  "description": "A short description shown on the project card.",
+  "detail": "A longer explanation shown when someone clicks Explore project.",
+  "live": "https://your-project.vercel.app",
+  "code": "https://github.com/jebickson/your-repository"
+}, */ //i added this project as a placeholder for you to replace with your own project details. You can add more projects by copying and pasting this object and changing the values.
     {
       "id": "signalist",
       "title": "Signalist",

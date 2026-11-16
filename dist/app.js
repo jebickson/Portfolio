@@ -20,7 +20,7 @@
   const galleryToggle = $('#gallery-toggle');
   function renderProjects() {
     const matching = profile.projects.filter(project => activeFilter === 'all' || project.category === activeFilter);
-    const visible = expanded ? matching : matching.slice(0, 4);
+    const visible = matching;
     grid.innerHTML = visible.map(project => `<article class="project-card">
       <button class="project-image-button" data-project="${escapeHTML(project.id)}" aria-label="View ${escapeHTML(project.title)} project details"><img src="${escapeHTML(project.image)}" alt="${escapeHTML(project.title)} project illustration" width="960" height="533" loading="lazy"><span class="project-open" aria-hidden="true"><svg><use href="#arrow"/></svg></span></button>
       <div class="project-title-row"><h3>${escapeHTML(project.title)}</h3><span class="heading-line"></span><a class="icon-link" href="${safeURL(project.code)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(project.title)} source code"><svg><use href="#github"/></svg></a><a class="icon-link" href="${safeURL(project.live)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(project.title)} live website"><svg><use href="#arrow"/></svg></a></div>
